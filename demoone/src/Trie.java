@@ -1,5 +1,8 @@
 import java.util.ArrayList;
 
+/**
+ * 添加字符串   判断是否以什么为开头  判断是否存在字符串
+ */
 public class Trie {
 
         /** Initialize your data structure here. */

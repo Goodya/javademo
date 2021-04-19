@@ -1,5 +1,4 @@
 import com.sun.deploy.util.StringUtils;
-import sun.plugin.javascript.navig.LinkArray;
 
 
 import java.util.*;
@@ -425,24 +424,35 @@ public class Main {
         int result = nums[0] + nums[1] + nums[2];
         for (int i = 0; i < n - 2; i++) {
             int numi = nums[i];
-            int l = i+1;
-            int r = n-1;
-            while (l<r){
-                int num = numi + nums[l] + nums[r];
-                result = Math.abs(result-target) < Math.abs(num-target)? result: num;
-                if (num < target){
-                    l++;
-                }else if (num> target){
-                    r--;
+            for (int j = i + 1; j < n - 1; j++) {
+                int k = j + 1;
+                if (numi + nums[j] + nums[k] > target) {
+                    while (numi + nums[j] + nums[k] > target) {
+                        k--;
+                        if (k == j) {
+                            k++;
+                            break;
+                        }
+                    }
+                    int res = Math.abs(result - target) < Math.abs(numi + nums[j] + nums[k] - target) ? result : numi + nums[j] + nums[k];
+                    result = Math.abs(result - target) <= Math.abs(res - target) ? result : res;
+                } else if (numi + nums[j] + nums[k] < target) {
+                    while (numi + nums[j] + nums[k] < target) {
+                        j++;
+                        if (k == j) {
+                            j--;
+                            break;
+                        }
+                    }
+                    int res = Math.abs(result - target) < Math.abs(numi + nums[j] + nums[k] - target) ? result : numi + nums[j] + nums[k];
+                    result = Math.abs(result - target) <= Math.abs(res - target) ? result : res;
                 } else {
-                    List<Integer> res = new ArrayList<>();
                     return target;
                 }
             }
         }
         return result;
     }
-
 
 
 }

@@ -1,3 +1,6 @@
+/**
+ * 最长回文子串
+ */
 public class LongestPalindrome {
     private int len;  //记录最终长度
     private int start; // 开始字符位置
