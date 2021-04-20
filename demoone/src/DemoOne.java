@@ -8,7 +8,7 @@ public class DemoOne {
 //        System.out.println(isValid("{[]}"));
 //        System.out.println(generateParenthesis(3));
 //        nextPermutation(new int[]{2, 3, 1});
-        System.out.println(longestValidParentheses1("(()(((())"));
+        System.out.println(longestValidParentheses2("(()(((()"));
     }
 
     /**
@@ -340,7 +340,7 @@ public class DemoOne {
     }
 
     /**
-     *
+     * 最长有效括号
      * @param s
      * @return
      */
@@ -365,6 +365,56 @@ public class DemoOne {
         }
         return max > validLen ? max : validLen;
     }
+
+    /**
+     * 最长有效括号 哨兵
+     * @param s
+     * @return
+     */
+    public static int longestValidParentheses2(String s) {
+        List<Integer> unmatchedBrackets;
+        int i, size, validLength, longest;
+
+        if (s == null || s.isEmpty()) {
+            return 0;
+        } // if (s == null || s.isEmpty())
+
+        longest = 0;
+        unmatchedBrackets = new ArrayList<>();
+        unmatchedBrackets.add(-1); // 哨兵
+        size = 1;
+        for (i = 0; i < s.length(); ++i) {
+            switch (s.charAt(i)) {
+                case '(':
+                    // 遇左括号压栈
+                    unmatchedBrackets.add(i);
+                    ++size;
+                    break; // case '('
+
+                case ')':
+                    // 遇右括号弹栈
+                    --size;
+                    unmatchedBrackets.remove(size);
+                    if (unmatchedBrackets.isEmpty()) {
+                        // 如果哨兵弹出说明当前右括号未配对左括号
+                        // 当前的右括号压栈成为新的哨兵
+                        unmatchedBrackets.add(i);
+                        ++size;
+                    } // if (unmatchedBrackets.isEmpty())
+                    else {
+                        // 当前右括号成功配对了一个左括号时
+                        // 计算当前右括号到上一个入栈字符的距离（有效子串的长度）
+                        // 并按需刷新最长有效长度
+                        validLength = i - unmatchedBrackets.get(size - 1);
+                        if (longest < validLength) {
+                            longest = validLength;
+                        } // if (longest < validLength)
+                    } // else
+            } // switch (s.charAt(i))
+        } // for (i = 0; i < s.length(); ++i)
+
+        return longest;
+    } // longestValidParentheses(String)
 
 
 }
