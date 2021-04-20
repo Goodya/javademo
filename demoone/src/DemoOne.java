@@ -7,7 +7,8 @@ public class DemoOne {
 //        System.out.println(fourSum(nums,8));
 //        System.out.println(isValid("{[]}"));
 //        System.out.println(generateParenthesis(3));
-        nextPermutation(new int[]{2, 3, 1});
+//        nextPermutation(new int[]{2, 3, 1});
+        System.out.println(longestValidParentheses1("(()(((())"));
     }
 
     /**
@@ -266,26 +267,103 @@ public class DemoOne {
      * @param nums
      */
     public static void nextPermutation(int[] nums) {
-        int len=nums.length;
-        int indexi=-1;
-        for (int i = len-1; i >=1 ; i--) {
-            if(nums[i]>nums[i-1]){
-                indexi=i-1;
+        int len = nums.length;
+        int indexi = -1;
+        for (int i = len - 1; i >= 1; i--) {
+            if (nums[i] > nums[i - 1]) {
+                indexi = i - 1;
                 break;
             }
         }
-        if(indexi>=0){
-            for (int i = len-1; i >=indexi+1; i--) {
-                if(nums[i]>nums[indexi]){
+        if (indexi >= 0) {
+            for (int i = len - 1; i >= indexi + 1; i--) {
+                if (nums[i] > nums[indexi]) {
                     //swap nums[i] and nums[indexi]
-                    int num=nums[i];
-                    nums[i]=nums[indexi];
-                    nums[indexi]=num;
+                    int num = nums[i];
+                    nums[i] = nums[indexi];
+                    nums[indexi] = num;
                     break;
                 }
             }
         }
-        Arrays.sort(nums,indexi+1,len);
+        Arrays.sort(nums, indexi + 1, len);
+    }
+
+    /**
+     * 找最长连续有效括号 超时......
+     *
+     * @param s
+     * @return
+     */
+    public static int longestValidParentheses(String s) {
+        if (s.length() < 2) {
+            return 0;
+        }
+        int maxNum = 0; //最大括号数量
+        for (int i = 0; i < s.length() - 1; i++) {
+            if (s.charAt(i) == ')') {
+                i++;
+                if (i == s.length()) {
+                    break;
+                }
+            }
+            int res = 0; //临时括号数量
+            int result = 0;
+            Stack<Character> z = new Stack<>();
+            for (int j = i; j < s.length(); j++) {
+                switch (s.charAt(j)) {
+                    case ')':
+                        if (z.isEmpty()) {
+                            maxNum = Math.max(maxNum, result);
+                            result = 0;
+                            res = 0;
+                            break;
+                        } else {
+                            z.pop();
+                            if (z.isEmpty()) {
+                                res += 2;
+                                result = result + res;
+                                res = 0;
+                                break;
+                            }
+                            res += 2;
+                            break;
+                        }
+                    default:
+                        z.push(s.charAt(j));
+                }
+            }
+            maxNum = Math.max(maxNum, result);
+
+        }
+        return maxNum;
+    }
+
+    /**
+     *
+     * @param s
+     * @return
+     */
+    public static int longestValidParentheses1(String s) {
+        char[] chars = s.toCharArray();
+        return Math.max(calc(chars, 0, 1, chars.length, '('), calc(chars, chars.length -1, -1, -1, ')'));
+    }
+
+    private static int calc(char[] chars , int i ,  int flag,int end, char cTem){
+        int max = 0, sum = 0, currLen = 0,validLen = 0;
+        for (;i != end; i += flag) {
+            sum += (chars[i] == cTem ? 1 : -1);
+            currLen ++;
+            if(sum < 0){
+                max = max > validLen ? max : validLen;
+                sum = 0;
+                currLen = 0;
+                validLen = 0;
+            }else if(sum == 0){
+                validLen = currLen;
+            }
+        }
+        return max > validLen ? max : validLen;
     }
 
 
