@@ -290,7 +290,7 @@ public class DemoOne {
     }
 
     /**
-     * 找最长连续有效括号 超时......
+     * 最长连续有效括号 超时......
      *
      * @param s
      * @return
@@ -340,7 +340,7 @@ public class DemoOne {
     }
 
     /**
-     * 最长有效括号
+     * 最长连续有效括号
      * @param s
      * @return
      */
@@ -367,7 +367,7 @@ public class DemoOne {
     }
 
     /**
-     * 最长有效括号 哨兵
+     * 最长连续有效括号 哨兵
      * @param s
      * @return
      */
