@@ -5,22 +5,25 @@ import java.util.*;
 
 public class Main {
     public static void main(String[] args) {
-//        char c = 'a';
-//        System.out.println((int) c);
-//        System.out.println(getMaxStr("abcabcbbabcdefg"));
-//        System.out.println(lengthOfLongestSubstring("abcade"));
-//        Trie trie = new Trie();
+//        System.out.println(getMaxStr("abcabcbbabcdefg"));//获取无重复字符的最长子串
+//        System.out.println(lengthOfLongestSubstring("abcade"));//无重复最长子串
+//        Trie trie = new Trie(); // 添加字符串   判断是否以什么为开头  判断是否存在字符串
 //        trie.insert("appel");
 //        System.out.println(trie.search("app"));
 //        System.out.println(trie.startsWith("app"));
 //        trie.insert("app");
 //        System.out.println(trie.search("app"));
-//        System.out.println(reverse(1534236469));
-//        System.out.println(isPalindrome(11));
+//        System.out.println(reverse(1534236469)); // 翻转数字 超范围返回0
+//        System.out.println(myAtoi1("-asd3543aa")); // 取字符串中的数字
+//        System.out.println(isPalindrome(11)); // 是否回文数
 //        int[] nums = {-1, 0, 1, 2, -1, -4};
-//        System.out.println(threeSum(nums));
+//        System.out.println(maxArea1(new int[]{1,3,6,9,7,4,1,2})); // x y 轴面积最大
+//        System.out.println(intToRoman(5465868)); // 数字转罗马数字
+//        System.out.println(romanToInt1("XII")); // 罗马数字转数字
+//        System.out.println(longestCommonPrefix(new String[]{"ab","ac","abac"})); // 最长公共前缀
+//        System.out.println(threeSum(nums)); // 三个整数和为0
         int[] nums = {1, 2, 4, 8, 16, 32, 64, 128};
-        System.out.println(threeSumClosest(nums, 82));
+        System.out.println(threeSumClosest(nums, 82));// 三个整数和与目标值最接近
     }
 
 
@@ -67,7 +70,11 @@ public class Main {
         return true;
     }
 
-
+    /**
+     * 无重复最长子串
+     * @param s
+     * @return
+     */
     public static int lengthOfLongestSubstring(String s) {
         // 记录字符上一次出现的位置
         int[] last = new int[128];
@@ -89,7 +96,7 @@ public class Main {
     }
 
     /**
-     * 反转数字
+     * 翻转数字
      *
      * @param x
      * @return
@@ -320,7 +327,7 @@ public class Main {
     }
 
     // 4ms 解法 罗马数字变数字
-    public int romanToInt1(String s) {
+    public static int romanToInt1(String s) {
         // 当前位小于下一位，右-左；否则右+左。总之，+右+/-左
         // 永远和前一位做比较,对前一位加或减
         int sum = 0;
@@ -339,7 +346,7 @@ public class Main {
 
     }
 
-    private int turnNum(char c) {
+    private static int turnNum(char c) {
         if (c == 'I') {
             return 1;
         }
@@ -365,6 +372,11 @@ public class Main {
 
     }
 
+    /**
+     * 最长公共前缀
+     * @param strs
+     * @return
+     */
     public static String longestCommonPrefix(String[] strs) {
         Arrays.sort(strs);
         StringBuilder res = new StringBuilder();
@@ -412,6 +424,12 @@ public class Main {
         return result;
     }
 
+    /**
+     * 三个整数和与目标值最接近
+     * @param nums
+     * @param target
+     * @return
+     */
     public static int threeSumClosest(int[] nums, int target) {
         Arrays.sort(nums);
         int n = nums.length;
