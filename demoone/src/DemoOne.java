@@ -4,11 +4,11 @@ import java.util.*;
 public class DemoOne {
     public static void main(String[] args) {
 //        int[] nums = new int[]{2,2,2,2,2,2,2,2,2,2,2,2,2};
-//        System.out.println(fourSum(nums,8));
-//        System.out.println(isValid("{[]}"));
-//        System.out.println(generateParenthesis(3));
-//        nextPermutation(new int[]{2, 3, 1});
-        System.out.println(longestValidParentheses2("(()(((()"));
+//        System.out.println(fourSum(nums,8)); // 四数之和
+//        System.out.println(isValid("{[]}")); //判断括号是否有效
+//        System.out.println(generateParenthesis(3)); //生成n对括号的所有有效情况
+//        nextPermutation(new int[]{2, 3, 1}); //将给定数字序列重新排列成字典序中下一个更大的排列。
+        System.out.println(longestValidParentheses2("(()(((()")); // 最长连续有效括号
     }
 
     /**
