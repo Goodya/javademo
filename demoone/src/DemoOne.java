@@ -8,7 +8,10 @@ public class DemoOne {
 //        System.out.println(isValid("{[]}")); //判断括号是否有效
 //        System.out.println(generateParenthesis(3)); //生成n对括号的所有有效情况
 //        nextPermutation(new int[]{2, 3, 1}); //将给定数字序列重新排列成字典序中下一个更大的排列。
-        System.out.println(longestValidParentheses2("(()(((()")); // 最长连续有效括号
+//        System.out.println(longestValidParentheses2("(()(((()")); // 最长连续有效括号
+        System.out.println(searchRange(new int[]{5, 7, 7, 8, 8, 10}, 7)); // 最长连续有效括号
+
+
     }
 
     /**
@@ -341,25 +344,26 @@ public class DemoOne {
 
     /**
      * 最长连续有效括号
+     *
      * @param s
      * @return
      */
     public static int longestValidParentheses1(String s) {
         char[] chars = s.toCharArray();
-        return Math.max(calc(chars, 0, 1, chars.length, '('), calc(chars, chars.length -1, -1, -1, ')'));
+        return Math.max(calc(chars, 0, 1, chars.length, '('), calc(chars, chars.length - 1, -1, -1, ')'));
     }
 
-    private static int calc(char[] chars , int i ,  int flag,int end, char cTem){
-        int max = 0, sum = 0, currLen = 0,validLen = 0;
-        for (;i != end; i += flag) {
+    private static int calc(char[] chars, int i, int flag, int end, char cTem) {
+        int max = 0, sum = 0, currLen = 0, validLen = 0;
+        for (; i != end; i += flag) {
             sum += (chars[i] == cTem ? 1 : -1);
-            currLen ++;
-            if(sum < 0){
+            currLen++;
+            if (sum < 0) {
                 max = max > validLen ? max : validLen;
                 sum = 0;
                 currLen = 0;
                 validLen = 0;
-            }else if(sum == 0){
+            } else if (sum == 0) {
                 validLen = currLen;
             }
         }
@@ -368,6 +372,7 @@ public class DemoOne {
 
     /**
      * 最长连续有效括号 哨兵
+     *
      * @param s
      * @return
      */
@@ -419,31 +424,235 @@ public class DemoOne {
 
     /**
      * 随机旋转数组二分法
+     *
      * @param nums
      * @param target
      * @return
      */
     public int search(int[] nums, int target) {
         int len = nums.length;
-        int left = 0, right = len-1;
-        while (left<=right){
-            int mid = (left+right)/2;
-            if (nums[mid] == target){
+        int left = 0, right = len - 1;
+        while (left <= right) {
+            int mid = (left + right) / 2;
+            if (nums[mid] == target) {
                 return mid;
-            }else if (nums[mid] < nums[right]){
-                if (nums[mid] < target && target <= nums[right]){
-                    left = mid+1;
-                }else {
-                    right = mid-1;
+            } else if (nums[mid] < nums[right]) {
+                if (nums[mid] < target && target <= nums[right]) {
+                    left = mid + 1;
+                } else {
+                    right = mid - 1;
                 }
-            }else {
-                if (nums[left] <= target && target < nums[mid] ){
-                    right = mid-1;
-                }else {
-                    left = mid+1;
+            } else {
+                if (nums[left] <= target && target < nums[mid]) {
+                    right = mid - 1;
+                } else {
+                    left = mid + 1;
                 }
             }
         }
         return -1;
     }
+
+
+    /**
+     * 数组中寻找目标值 开始和结束位置
+     *
+     * @param nums
+     * @param target
+     * @return
+     */
+    public static int[] searchRange(int[] nums, int target) {
+        int[] result = new int[]{-1, -1};
+        if (nums.length == 0) {
+            return result;
+        }
+        int left = 0;
+        int right = nums.length - 1;
+        int mid = (left + right) / 2;
+        while (left <= right) {
+            mid = (left + right) / 2;
+            if (nums[mid] == target) {
+                break;
+            } else if (nums[mid] > target) {
+                right = mid - 1;
+            } else {
+                left = mid + 1;
+            }
+        }
+        if (nums[mid] != target) {
+            return result;
+        }
+        while (nums[mid] == target) {
+            if (mid == 0) {
+                mid--;
+                break;
+            }
+            mid--;
+        }
+        result[0] = ++mid;
+        while (nums[mid] == target) {
+            if (mid == nums.length - 1) {
+                mid++;
+                break;
+            }
+            mid++;
+        }
+        result[1] = --mid;
+        return result;
+    }
+
+    /**
+     * 数组中寻找目标值 开始和结束位置
+     *
+     * @param nums
+     * @param target
+     * @return
+     */
+    public static int[] searchRange1(int[] nums, int target) {
+        int[] result = new int[]{-1, -1};
+        result[0] = searchBorder(nums, target, true);
+        result[1] = searchBorder(nums, target, false);
+        return result;
+    }
+
+    public static int searchBorder(int[] nums, int target, Boolean isleft) {
+        int left = 0;
+        int right = nums.length - 1;
+        int res = -1;
+        while (left <= right) {
+            int mid = (left + right) / 2;
+            if (nums[mid] < target) {
+                left = mid + 1;
+            } else if (nums[mid] > target) {
+                right = mid - 1;
+            } else {
+                res = mid;
+                if (isleft) {
+                    right = mid - 1;
+                } else {
+                    left = mid + 1;
+                }
+            }
+        }
+        return res;
+    }
+
+    /**
+     * 26个字母对应数字 统计字符串可转成字母的种类数。
+     *
+     * @param s
+     * @return
+     */
+    public int numDecodings(String s) {
+        int n = s.length();
+        int[] res = new int[n + 1];
+        if (s.charAt(0) == '0') {
+            return 0;
+        }
+        res[0] = 1;
+        res[1] = 1; //第几个位置的总种类数
+        for (int i = 1; i < n; i++) { // 210121
+            if (s.charAt(i) == '0' && s.charAt(i - 1) != '1' && s.charAt(i - 1) != '2') {
+                return 0;
+            }
+            String str = s.substring(i - 1, i + 1);
+            if (str.equals("10") || str.equals("20")) {
+                res[i + 1] = res[i - 1]; //把上一个数字占用了，总数量退回到两个位置之前的值
+            } else if (10 < Integer.valueOf(str) && Integer.valueOf(str) <= 26) {
+                res[i + 1] = res[i] + res[i - 1]; // 总数为前两个位置的和
+            } else {
+                res[i + 1] = res[i]; // 总数量没变化
+            }
+
+        }
+        return res[n];
+    }
+
+    /**
+     * 买股票赚最多的钱数  （贪心算法： 总是做出对当前状态最优的选择）
+     *
+     * @param prices
+     * @return
+     */
+    public int maxProfit(int[] prices) {
+//        int total=0;  // 更贪
+//        for(int i=0;i<prices.length-1;i++){
+//            if(prices[i]<prices[i+1]){
+//                total+=prices[i+1]-prices[i];
+//            }
+//        }
+//        return total;
+        int len = prices.length;
+        int result = 0; //结果
+        int idx = 0;
+        while (idx < len){
+            while (idx < len-1 && prices[idx] >= prices[idx+1]){
+                idx++;
+            }
+            int min = prices[idx];//开始上涨最小值
+            while (idx < len-1 && prices[idx] <= prices[idx+1]){
+                idx++;
+            }
+            result += prices[idx++] - min;
+        }
+        return result;
+    }
+
+    /**
+     * 右移数组
+     * @param nums
+     * @param k
+     */
+    public void rotate(int[] nums, int k) {
+        int[] res = new int[nums.length];
+        for (int i=0 ; i<nums.length ; i++){
+            res[(i+k)%nums.length] = nums[i];
+        }
+        for (int i=0 ; i<nums.length; i++){
+            nums[i] = res[i];
+        }
+    }
+
+    /**
+     * 判断数组是否有重复元素
+     * @param nums
+     * @return
+     */
+    public boolean containsDuplicate(int[] nums) {
+        Arrays.sort(nums);
+        int i = 0;
+        while (i<nums.length-1){
+            while (nums[i+1] == nums[i]){
+                return true;
+            }
+            i++;
+        }
+        return false;
+    }
+
+    /**
+     * 找出一个只出现一次的数，其余都出现两次
+     * @param nums
+     * @return
+     */
+    public int singleNumber(int[] nums) {
+//        int result = 0; // 位运算
+//        for (int i : nums) {
+//            result ^= i;
+//        }
+//        return result;
+        HashSet<Integer> set = new HashSet<>();
+        for (int i=0;i<nums.length;i++){
+            if (!set.add(nums[i])){
+                set.remove(nums[i]);
+            }
+        }
+        return Integer.valueOf(set.toArray()[0].toString());
+    }
+
+
+
+
+
+
 }
