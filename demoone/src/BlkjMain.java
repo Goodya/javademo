@@ -55,18 +55,23 @@ public class BlkjMain {
     }
 
     public static int getResult (int[] arr,int i, Boolean boo,int res ,int maxres){
-        if (i != arr.length){
+        maxres = Math.max(maxres,res);
+        if (i < arr.length){
             if (!boo){
                 getResult(arr,i+1,true,res,maxres);
             }
             getResult(arr,i+1,false,res+arr[i],maxres);
             getResult(arr,i+1,true,res,maxres);
-            maxres = Math.max(maxres,res);
         }
-        return res;
+        return maxres;
     }
 
 
+    /**
+     * 求数组中连续为1的面积
+     * @param grid
+     * @return
+     */
     public static int maxAreaOfIsland (int[][] grid) {
         // write code here
         int w = grid[0].length;
@@ -75,25 +80,26 @@ public class BlkjMain {
             return 0;
         }
         int result = 0;
-        if (h==0){
-            int j = 0;
-            int k = 0;
-            while (j<grid[0].length){
-                while (j<grid[0].length-1 && grid[0][j] == 0){
-                    j++;
-                }
-                k=j;
-                while (j<grid[0].length-1 && grid[0][j] == 1){
-                    j++;
-                }
-                result = Math.max(result,(j-k));
-            }
-            return result;
+//        if (h==0){
+//            int j = 0;
+//            int k = 0;
+//            while (j<grid[0].length){
+//                while (j<grid[0].length-1 && grid[0][j] == 0){
+//                    j++;
+//                }
+//                k=j;
+//                while (j<grid[0].length-1 && grid[0][j] == 1){
+//                    j++;
+//                }
+//                result = Math.max(result,(j-k));
+//            }
+//            return result;
+//        }
+            int len = w*h;
+        if (h == 0){
+            len = w;
         }
-        int len = w*h;
         int[] gid = new int[len]; // 代表当前位置是否遍历过
-
-
         for (int i=0 ; i<len ; i++){
             if (grid[i%w][i/w] == 0 || gid[i] == 1){
                 continue;
@@ -105,11 +111,17 @@ public class BlkjMain {
 
     public static int searchGrid(int[][] grid,int x,int y, int maxArea,int[] gid,int w,int h){
         gid[x*w + y] = 1;
-        while (gid[x*w+y] == 0 && x<h-1 && grid[x+1][y] == 1){
+        while (gid[x*w+y] == 0 && x<w-1 && grid[x+1][y] == 1){
             searchGrid(grid,x+1,y,++maxArea,gid,w,h);
         }
-        while (gid[x*w+y] == 0 && y<w-1 && grid[x][y+1] == 1){
+        while (gid[x*w+y] == 0 && y<h-1 && grid[x][y+1] == 1){
             searchGrid(grid,x,y+1,++maxArea,gid,w,h);
+        }
+        while (gid[x*w+y] == 0 && x>0 && grid[x-1][y] == 1){
+            searchGrid(grid,x-1,y,++maxArea,gid,w,h);
+        }
+        while (gid[x*w+y] == 0 && y>0 && grid[x][y-1] == 1){
+            searchGrid(grid,x,y-1,++maxArea,gid,w,h);
         }
         return maxArea;
     }
