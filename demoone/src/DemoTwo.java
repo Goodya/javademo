@@ -145,5 +145,61 @@ public class DemoTwo {
         return true;
     }
 
+    private int[] memo;
+    /**
+     * 返回和为目标值的组合的总数
+     * @param nums
+     * @param target
+     * @return
+     */
+    public int combinationSum4(int[] nums, int target) {
+//        if(target == 0){  // 简单递归 会超时
+//            return 1;
+//        }
+//        int res = 0;
+//        for(int num : nums){
+//            if(target >= num){
+//                res += combinationSum4(nums,target-num);
+//            }
+//        }
+//        return res;
+
+        memo = new int[target + 1];
+        Arrays.fill(memo, -1);
+        memo[0] = 1;
+        return search(nums, target);
+    }
+
+    //记忆化搜索 返回和为目标值的组合的总数
+    private int search(int[] nums, int target) {
+        if (memo[target] != -1) {
+            return memo[target];
+        }
+        int res = 0;
+        for (int num : nums) {
+            if (target >= num) {
+                res += search(nums, target - num);
+            }
+        }
+        memo[target] = res;
+        return res;
+    }
+
+    /**
+     * 动态规划   返回和为目标值的组合的总数
+     */
+    public int combinationSum4d(int[] nums, int target) {
+        int[] memo = new int[target + 1];
+        memo[0] = 1;
+        for (int i = 0; i < target; i++) {
+            for (int num : nums) {
+                if (i + num <= target) {
+                    memo[i + num] += memo[i];
+                }
+            }
+        }
+        return memo[target];
+    }
+
 
 }
