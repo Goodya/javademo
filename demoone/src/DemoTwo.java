@@ -3,7 +3,8 @@ import java.util.Arrays;
 public class DemoTwo {
     public static void main(String[] args) {
 //        moveZeroes(new int[]{0,1,0,3,12});
-        System.out.println('0' - '0');
+        System.out.println(isPalindrome("0P"));
+        System.out.println(Character.isLetter('O'));
     }
 
 
@@ -216,6 +217,145 @@ public class DemoTwo {
             dp[i] = dp[i - 1] + dp[i - 2];
         }
         return dp[n];
+    }
+
+    /**
+     * 字符串第一个唯一字符
+     * @param s
+     * @return
+     */
+    public int firstUniqChar(String s) {
+        if (s.length()<1){
+            return -1;
+        }
+        if(s.length()<2){
+            return 0;
+        }
+        int i = 0;
+        while (i<s.length()){
+            if (s.indexOf(s.charAt(i)) == s.lastIndexOf(s.charAt(i))){
+                return i;
+            }
+        }
+        return -1;
+    }
+
+    /**
+     * 字符串第一个唯一字符 当时最快
+     * @param s
+     * @return
+     */
+    public int firstUniqChar1(String s) {
+        // 字符串长度不超过26，按照原先的方式遍历
+        if (s.length() <= 26) {
+            int[] chars = new int[26];
+            for (char c : s.toCharArray()) {
+                chars[c - 'a'] += 1;
+            }
+            for (int i = 0; i < s.length(); ++i) {
+                if (chars[s.charAt(i) - 'a'] == 1) {
+                    return i;
+                }
+            }
+        }
+        //只遍历26个字母，使用indexOf函数检查字符索引
+        int result = -1;
+        for (char c = 'a'; c <= 'z'; ++c) {
+            int pre = s.indexOf(c);
+            // s包含该字符并且只出现一次
+            if (pre != -1 && pre == s.lastIndexOf(c)) {
+                // 取最前面的位置
+                result = (result == -1 || result > pre) ? pre : result;
+            }
+        }
+        return result;
+    }
+
+    /**
+     * 有效的字母异位词
+     * @param s
+     * @param t
+     * @return
+     */
+    public boolean isAnagram(String s, String t) {
+        if(s.length() != t.length()){
+            return false;
+        }
+        char[] a1 = s.toCharArray();
+        char[] a2 = t.toCharArray();
+        Arrays.sort(a1);
+        Arrays.sort(a2);
+        if (a1.equals(a2)){
+            return true;
+        }
+        return false;
+    }
+
+    /**
+     * 判断是否回文串
+     * @param s
+     * @return
+     */
+    public static boolean isPalindrome(String s) {
+        s.trim();
+        int i=0 ;
+        int j=s.length()-1;
+        while (i<j){
+            while(i<j && !Character.isLetterOrDigit(s.charAt(i))){
+                i++;
+            }
+            while(i<j && !Character.isLetterOrDigit(s.charAt(j))){
+                j--;
+            }
+            if (Character.toLowerCase(s.charAt(i)) != Character.toLowerCase(s.charAt(j))){
+                return false;
+            }
+            i++;
+            j--;
+        }
+        return true;
+    }
+
+    /**
+     * 外观数列  1
+     * 2.     11
+     * 3.     21
+     * 4.     1211
+     * 5.     111221
+     * 第一项是数字 1
+     * 描述前一项，这个数是 1 即 “ 一 个 1 ”，记作 "11"
+     * 描述前一项，这个数是 11 即 “ 二 个 1 ” ，记作 "21"
+     * 描述前一项，这个数是 21 即 “ 一 个 2 + 一 个 1 ” ，记作 "1211"
+     * 描述前一项，这个数是 1211 即 “ 一 个 1 + 一 个 2 + 二 个 1 ” ，记作 "111221"
+     * @param n
+     * @return
+     */
+    public String countAndSay(int n) {
+        // 递归出口
+        if(n==1){
+            return "1";
+        }
+        String s1 = countAndSay(n - 1);
+        // 定义结果
+        StringBuilder result = new StringBuilder();
+        // 对s1遍历处理获取值
+        char local = s1.charAt(0);
+        int count = 0;
+        for (int i = 0; i < s1.length(); i++) {
+            // 设定计数器 计算同一个数字出现的次数 count
+            if(s1.charAt(i) == local){
+                count++;
+            }else {
+                // 不符合，记录下
+                result.append(count);
+                result.append(local);
+                count = 1;
+                local = s1.charAt(i);
+            }
+        }
+        result.append(count);
+        result.append(local);
+        return result.toString();
     }
 
 

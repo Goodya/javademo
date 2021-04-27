@@ -650,6 +650,24 @@ public class DemoOne {
         return Integer.valueOf(set.toArray()[0].toString());
     }
 
+    /**
+     * 反转字符串
+     * @param s
+     */
+    public void reverseString(char[] s) {
+        int j = s.length-1;
+        if(j<1){
+            return;
+        }
+        int i = 0;
+        while (i<j){
+            char cha = s[j];
+            s[j--] = s[i];
+            s[i++] = cha;
+        }
+
+    }
+
 
 
 
