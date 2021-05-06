@@ -358,6 +358,17 @@ public class DemoTwo {
         return result.toString();
     }
 
+    public int maxProfit(int[] prices) {
+        if (prices == null || prices.length == 0)
+            return 0;
+        int maxPro = 0;//记录最大利润
+        int min = prices[0];//记录数组中访问过的最小值
+        for (int i = 1; i < prices.length; i++) {
+            min = Math.min(min, prices[i]);
+            maxPro = Math.max(prices[i] - min, maxPro);
+        }
+        return maxPro;
+    }
 
 
 
